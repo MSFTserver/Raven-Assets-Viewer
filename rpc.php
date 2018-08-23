@@ -1,10 +1,14 @@
 <?
 /*
-https://github.com/aceat64/EasyBitcoin-PHP/blob/master/easybitcoin.php
-
+Based on:
 EasyBitcoin-PHP
 A simple class for making calls to Bitcoin's API using PHP.
 https://github.com/aceat64/EasyBitcoin-PHP
+
+ChangeLog by RealBokito:
+Changed references to bitcoin into ravencoin
+Changed default RPC port to 8766
+
 ====================
 The MIT License (MIT)
 Copyright (c) 2013 Andrew LeCody
@@ -24,31 +28,31 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 ====================
-// Initialize Bitcoin connection/object
-$bitcoin = new Bitcoin('username','password');
+// Initialize Raven connection/object
+$raven = new Raven('username','password');
 // Optionally, you can specify a host and port.
-$bitcoin = new Bitcoin('username','password','host','port');
+$raven = new Raven('username','password','host','port');
 // Defaults are:
 //	host = localhost
-//	port = 8332
+//	port = 8766
 //	proto = http
 // If you wish to make an SSL connection you can set an optional CA certificate or leave blank
 // This will set the protocol to HTTPS and some CURL flags
-$bitcoin->setSSL('/full/path/to/mycertificate.cert');
-// Make calls to bitcoind as methods for your object. Responses are returned as an array.
+$raven->setSSL('/full/path/to/mycertificate.cert');
+// Make calls to ravend as methods for your object. Responses are returned as an array.
 // Examples:
-$bitcoin->getinfo();
-$bitcoin->getrawtransaction('0e3e2357e806b6cdb1f70b54c3a3a17b6714ee1f0e68bebb44a74b1efd512098',1);
-$bitcoin->getblock('000000000019d6689c085ae165831e934ff763ae46a2a6c172b3f1b60a8ce26f');
+$raven->getinfo();
+$raven->getrawtransaction('0e3e2357e806b6cdb1f70b54c3a3a17b6714ee1f0e68bebb44a74b1efd512098',1);
+$raven->getblock('000000000019d6689c085ae165831e934ff763ae46a2a6c172b3f1b60a8ce26f');
 // The full response (not usually needed) is stored in $this->response
 // while the raw JSON is stored in $this->raw_response
 // When a call fails for any reason, it will return FALSE and put the error message in $this->error
 // Example:
-echo $bitcoin->error;
+echo $raven->error;
 // The HTTP status code can be found in $this->status and will either be a valid HTTP status code
 // or will be 0 if cURL was unable to connect.
 // Example:
-echo $bitcoin->status;
+echo $raven->status;
 */
 class Raven
 {
@@ -151,10 +155,10 @@ class Raven
             $this->error = $curl_error;
         }
         if ($this->response['error']) {
-            // If bitcoind returned an error, put that in $this->error
+            // If ravend returned an error, put that in $this->error
             $this->error = $this->response['error']['message'];
         } elseif ($this->status != 200) {
-            // If bitcoind didn't return a nice error message, we need to make our own
+            // If ravend didn't return a nice error message, we need to make our own
             switch ($this->status) {
                 case 400:
                     $this->error = 'HTTP_BAD_REQUEST';
